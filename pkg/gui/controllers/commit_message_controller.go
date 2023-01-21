@@ -9,6 +9,7 @@ type CommitMessageController struct {
 	*controllerCommon
 
 	getCommitMessage func() string
+	setCommitMessage func(message string)
 	onCommitAttempt  func(message string)
 	onCommitSuccess  func()
 }
@@ -20,6 +21,7 @@ func NewCommitMessageController(
 	getCommitMessage func() string,
 	onCommitAttempt func(message string),
 	onCommitSuccess func(),
+	setCommitMessage func(message string),
 ) *CommitMessageController {
 	return &CommitMessageController{
 		baseController:   baseController{},
@@ -28,6 +30,7 @@ func NewCommitMessageController(
 		getCommitMessage: getCommitMessage,
 		onCommitAttempt:  onCommitAttempt,
 		onCommitSuccess:  onCommitSuccess,
+		setCommitMessage: setCommitMessage,
 	}
 }
 
@@ -40,6 +43,14 @@ func (self *CommitMessageController) GetKeybindings(opts types.KeybindingsOpts) 
 		{
 			Key:     opts.GetKey(opts.Config.Universal.Return),
 			Handler: self.close,
+		},
+		{
+			Key:     opts.GetKey(opts.Config.Universal.PrevItem),
+			Handler: self.previousCommit,
+		},
+		{
+			Key:     opts.GetKey(opts.Config.Universal.NextItem),
+			Handler: self.nextCommit,
 		},
 	}
 
@@ -55,7 +66,26 @@ func (self *CommitMessageController) Context() types.Context {
 func (self *CommitMessageController) context() types.Context {
 	return self.contexts.CommitMessage
 }
+var counter = 1
+func (self *CommitMessageController) previousCommit() error {
+	prevMessage, err := self.git.Commit.GetMessageShawn(counter)
+	if (err != nil) {
+		return self.c.ErrorMsg(self.c.Tr.CommitWithoutMessageErr)
+	}
+	self.setCommitMessage(prevMessage)
+	counter = counter + 1
+	return nil
+}
 
+func (self *CommitMessageController) nextCommit() error {
+	nextMessage, err := self.git.Commit.GetMessageShawn(counter)
+	if (err != nil) {
+		return self.c.ErrorMsg(self.c.Tr.CommitWithoutMessageErr)
+	}
+	self.setCommitMessage(nextMessage)
+	counter = counter - 1
+	return nil
+}
 func (self *CommitMessageController) confirm() error {
 	message := self.getCommitMessage()
 	self.onCommitAttempt(message)

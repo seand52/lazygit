@@ -99,6 +99,7 @@ func (gui *Gui) resetControllers() {
 		getCommitMessage,
 		onCommitAttempt,
 		onCommitSuccess,
+		setCommitMessage,
 	)
 
 	remoteBranchesController := controllers.NewRemoteBranchesController(common)

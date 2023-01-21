@@ -263,3 +263,37 @@ Merge pull request #1750 from mark2185/fix-issue-template
 		})
 	}
 }
+
+func TestGetMessageShawn(t *testing.T) {
+	type scenario struct {
+		testName       string
+		runner		   *oscommands.FakeCmdObjRunner
+		expectedOutput string
+	}
+	scenarios := []scenario{
+		{
+			"empty",
+			oscommands.NewFakeRunner(t).Expect("git log -n 3 --pretty=%H", "sha1\n", nil).Expect("git rev-list --format=%B --max-count=1 sha1", `commit sha1`, nil),
+			"",
+		},
+		{
+			"classic",
+			oscommands.NewFakeRunner(t).Expect("git log -n 3 --pretty=%H", "sha1\nsha2\nsha3", nil).Expect("git rev-list --format=%B --max-count=1 sha3", `commit sha3
+				use generics to DRY up context code`, nil),
+			"use generics to DRY up context code",
+		},
+	}
+
+	for _, s := range scenarios {
+		s := s
+		t.Run(s.testName, func(t *testing.T) {
+			instance := buildCommitCommands(commonDeps{runner: s.runner})
+
+			output, err := instance.GetMessageShawn(3)
+
+			assert.NoError(t, err)
+
+			assert.Equal(t, s.expectedOutput, output)
+		})
+	}
+}
