@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"github.com/jesseduffield/lazygit/pkg/gui/context"
 	"github.com/jesseduffield/lazygit/pkg/gui/types"
 )
 
 type CommitMessageController struct {
 	baseController
 	*controllerCommon
+	contextsean *context.CommitMessageContext
 
 	getCommitMessage func() string
 	setCommitMessage func(message string)
@@ -26,6 +28,7 @@ func NewCommitMessageController(
 	return &CommitMessageController{
 		baseController:   baseController{},
 		controllerCommon: common,
+		contextsean: &context.CommitMessageContext{},
 
 		getCommitMessage: getCommitMessage,
 		onCommitAttempt:  onCommitAttempt,
@@ -46,11 +49,11 @@ func (self *CommitMessageController) GetKeybindings(opts types.KeybindingsOpts) 
 		},
 		{
 			Key:     opts.GetKey(opts.Config.Universal.PrevItem),
-			Handler: self.previousCommit,
+			Handler: self.handlePreviousCommit,
 		},
 		{
 			Key:     opts.GetKey(opts.Config.Universal.NextItem),
-			Handler: self.nextCommit,
+			Handler: self.handleNextCommit,
 		},
 	}
 
@@ -66,26 +69,34 @@ func (self *CommitMessageController) Context() types.Context {
 func (self *CommitMessageController) context() types.Context {
 	return self.contexts.CommitMessage
 }
-var counter = 1
-func (self *CommitMessageController) previousCommit() error {
-	prevMessage, err := self.git.Commit.GetMessageShawn(counter)
+
+func (self *CommitMessageController) handlePreviousCommit() error {
+	return self.handleCommitIndexChange(1)
+}
+
+func (self *CommitMessageController) handleNextCommit() error {
+	return self.handleCommitIndexChange(-1)
+}
+
+func (self *CommitMessageController) handleCommitIndexChange(value int) error {
+	self.contextsean.IncrementSelectedIndexBy(value)
+	currentIndex:= self.contextsean.GetSelectedIndex()
+	if (currentIndex <= 0) {
+		self.setCommitMessage("")
+		return nil
+	}
+	return self.setCommitMessageAtIndex(currentIndex)
+}
+
+func (self *CommitMessageController) setCommitMessageAtIndex(index int) error {
+	msg, err := self.git.Commit.GetMessageShawn(index)
 	if (err != nil) {
 		return self.c.ErrorMsg(self.c.Tr.CommitWithoutMessageErr)
 	}
-	self.setCommitMessage(prevMessage)
-	counter = counter + 1
+	self.setCommitMessage(msg)
 	return nil
 }
 
-func (self *CommitMessageController) nextCommit() error {
-	nextMessage, err := self.git.Commit.GetMessageShawn(counter)
-	if (err != nil) {
-		return self.c.ErrorMsg(self.c.Tr.CommitWithoutMessageErr)
-	}
-	self.setCommitMessage(nextMessage)
-	counter = counter - 1
-	return nil
-}
 func (self *CommitMessageController) confirm() error {
 	message := self.getCommitMessage()
 	self.onCommitAttempt(message)
