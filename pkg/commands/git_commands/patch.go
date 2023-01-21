@@ -240,7 +240,7 @@ func (self *PatchCommands) PullPatchIntoNewCommit(commits []*models.Commit, comm
 		return err
 	}
 
-	head_message, _ := self.commit.GetHeadCommitMessage()
+	head_message, _ := self.commit.GetMessageShawn(1)
 	new_message := fmt.Sprintf("Split from \"%s\"", head_message)
 	err := self.commit.CommitCmdObj(new_message).Run()
 	if err != nil {

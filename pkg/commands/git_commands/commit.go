@@ -84,11 +84,6 @@ func (self *CommitCommands) verboseFlag() string {
 	}
 }
 
-// Get the subject of the HEAD commit
-func (self *CommitCommands) GetHeadCommitMessage() (string, error) {
-	message, err := self.cmd.New("git log -1 --pretty=%s").DontLog().RunWithOutput()
-	return strings.TrimSpace(message), err
-}
 
 func (self *CommitCommands) GetCommitMessage(commitSha string) (string, error) {
 	cmdStr := "git rev-list --format=%B --max-count=1 " + commitSha
