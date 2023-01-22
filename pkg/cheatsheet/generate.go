@@ -101,6 +101,7 @@ func localisedTitle(tr *i18n.TranslationSet, str string) string {
 		"tags":           tr.TagsTitle,
 		"commitFiles":    tr.CommitFilesTitle,
 		"commitMessage":  tr.CommitMessageTitle,
+		"commitDescription": tr.CommitDescriptionTitle,
 		"commits":        tr.CommitsTitle,
 		"confirmation":   tr.ConfirmationTitle,
 		"information":    tr.InformationTitle,

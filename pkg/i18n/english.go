@@ -195,6 +195,7 @@ type TranslationSet struct {
 	MergeOptionsTitle                   string
 	RebaseOptionsTitle                  string
 	CommitMessageTitle                  string
+	CommitDescriptionTitle				string
 	LocalBranchesTitle                  string
 	SearchTitle                         string
 	TagsTitle                           string
@@ -645,7 +646,7 @@ type Actions struct {
 const englishIntroPopupMessage = `
 Thanks for using lazygit! Seriously you rock. Three things to share with you:
 
- 1) If you want to learn about lazygit's features, watch this vid:
+ 1) If y ou want to learn about lazygit's features, watch this vid:
       https://youtu.be/CPLdltN7wgE
 
  2) Be sure to read the latest release notes at:
@@ -845,6 +846,7 @@ func EnglishTranslationSet() TranslationSet {
 		MergeOptionsTitle:                   "Merge Options",
 		RebaseOptionsTitle:                  "Rebase Options",
 		CommitMessageTitle:                  "Commit Message",
+		CommitDescriptionTitle:              "Commit Description",
 		LocalBranchesTitle:                  "Local Branches",
 		SearchTitle:                         "Search",
 		TagsTitle:                           "Tags",

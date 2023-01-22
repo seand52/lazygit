@@ -37,6 +37,7 @@ const (
 	CONFIRMATION_CONTEXT_KEY   types.ContextKey = "confirmation"
 	SEARCH_CONTEXT_KEY         types.ContextKey = "search"
 	COMMIT_MESSAGE_CONTEXT_KEY types.ContextKey = "commitMessage"
+	COMMIT_DESCRIPTION_CONTEXT_KEY types.ContextKey = "commitDescription"
 	SUBMODULES_CONTEXT_KEY     types.ContextKey = "submodules"
 	SUGGESTIONS_CONTEXT_KEY    types.ContextKey = "suggestions"
 	COMMAND_LOG_CONTEXT_KEY    types.ContextKey = "cmdLog"
@@ -98,6 +99,7 @@ type ContextTree struct {
 	MergeConflicts              *MergeConflictsContext
 	Confirmation                types.Context
 	CommitMessage               types.Context
+	CommitDescription			types.Context
 	CommandLog                  types.Context
 
 	// display contexts
@@ -129,6 +131,7 @@ func (self *ContextTree) Flatten() []types.Context {
 		self.Menu,
 		self.Confirmation,
 		self.CommitMessage,
+		self.CommitDescription,
 
 		self.MergeConflicts,
 		self.StagingSecondary,

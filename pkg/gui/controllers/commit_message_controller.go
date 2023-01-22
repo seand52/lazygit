@@ -55,6 +55,10 @@ func (self *CommitMessageController) GetKeybindings(opts types.KeybindingsOpts) 
 			Key:     opts.GetKey(opts.Config.Universal.NextItem),
 			Handler: self.handleNextCommit,
 		},
+		{
+			Key:     opts.GetKey(opts.Config.Universal.NextBlockAlt2),
+			Handler: self.handleCommitDescriptionPress,
+		},
 	}
 
 	return bindings
@@ -76,6 +80,13 @@ func (self *CommitMessageController) handlePreviousCommit() error {
 
 func (self *CommitMessageController) handleNextCommit() error {
 	return self.handleCommitIndexChange(-1)
+}
+
+func (self *CommitMessageController) handleCommitDescriptionPress() error {
+	if err := self.c.PushContext(self.contexts.CommitDescription); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (self *CommitMessageController) handleCommitIndexChange(value int) error {

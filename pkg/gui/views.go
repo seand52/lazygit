@@ -30,6 +30,7 @@ type Views struct {
 	Confirmation  *gocui.View
 	Menu          *gocui.View
 	CommitMessage *gocui.View
+	CommitDescription *gocui.View
 	CommitFiles   *gocui.View
 	SubCommits    *gocui.View
 	Information   *gocui.View
@@ -94,6 +95,7 @@ func (gui *Gui) orderedViewNameMappings() []viewNameMapping {
 
 		// popups.
 		{viewPtr: &gui.Views.CommitMessage, name: "commitMessage"},
+		{viewPtr: &gui.Views.CommitDescription, name: "commitDescription"},
 		{viewPtr: &gui.Views.Menu, name: "menu"},
 		{viewPtr: &gui.Views.Suggestions, name: "suggestions"},
 		{viewPtr: &gui.Views.Confirmation, name: "confirmation"},
@@ -204,6 +206,12 @@ func (gui *Gui) createAllViews() error {
 	gui.Views.CommitMessage.FgColor = theme.GocuiDefaultTextColor
 	gui.Views.CommitMessage.Editable = true
 	gui.Views.CommitMessage.Editor = gocui.EditorFunc(gui.commitMessageEditor)
+
+	gui.Views.CommitDescription.Visible = false
+	gui.Views.CommitDescription.Title = gui.c.Tr.CommitDescriptionTitle
+	gui.Views.CommitDescription.FgColor = theme.GocuiDefaultTextColor
+	gui.Views.CommitDescription.Editable = true
+	gui.Views.CommitDescription.Editor = gocui.EditorFunc(gui.simpleEditor)
 
 	gui.Views.Confirmation.Visible = false
 

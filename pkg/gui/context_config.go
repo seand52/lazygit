@@ -230,6 +230,22 @@ func (gui *Gui) contextTree() *context.ContextTree {
 				OnFocus: OnFocusWrapper(gui.handleCommitMessageFocused),
 			},
 		),
+		CommitDescription: context.NewSimpleContext(
+			context.NewBaseContext(context.NewBaseContextOpts{
+				Kind:                  types.PERSISTENT_POPUP,
+				View:                  gui.Views.CommitDescription,
+				WindowName:            "commitDescription",
+				Key:                   context.COMMIT_DESCRIPTION_CONTEXT_KEY,
+				Focusable:             true,
+				HasUncontrolledBounds: true,
+			}),
+			context.ContextCallbackOpts{
+				OnFocus: func(opts types.OnFocusOpts) error {
+					gui.g.SetViewBeneath("commitDescription", "commitMessage", 10)
+					return nil
+				},
+			},
+		),
 		Search: context.NewSimpleContext(
 			context.NewBaseContext(context.NewBaseContextOpts{
 				Kind:       types.PERSISTENT_POPUP,
