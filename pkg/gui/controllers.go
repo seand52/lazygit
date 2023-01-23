@@ -85,6 +85,10 @@ func (gui *Gui) resetControllers() {
 		return strings.TrimSpace(gui.Views.CommitMessage.TextArea.GetContent())
 	}
 
+	getCommitDescription := func() string {
+		return strings.TrimSpace(gui.Views.CommitDescription.TextArea.GetContent())
+	}
+
 	onCommitAttempt := func(message string) {
 		gui.State.savedCommitMessage = message
 		gui.Views.CommitMessage.ClearTextArea()
@@ -97,9 +101,14 @@ func (gui *Gui) resetControllers() {
 	commitMessageController := controllers.NewCommitMessageController(
 		common,
 		getCommitMessage,
+		getCommitDescription,
 		onCommitAttempt,
 		onCommitSuccess,
 		setCommitMessage,
+	)
+
+	commitDescriptionController := controllers.NewCommitDescriptionController(
+		common,
 	)
 
 	remoteBranchesController := controllers.NewRemoteBranchesController(common)
@@ -238,6 +247,10 @@ func (gui *Gui) resetControllers() {
 
 	controllers.AttachControllers(gui.State.Contexts.CommitMessage,
 		commitMessageController,
+	)
+
+	controllers.AttachControllers(gui.State.Contexts.CommitDescription,
+		commitDescriptionController,
 	)
 
 	controllers.AttachControllers(gui.State.Contexts.RemoteBranches,

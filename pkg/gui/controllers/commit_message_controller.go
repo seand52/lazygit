@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"fmt"
+
 	"github.com/jesseduffield/lazygit/pkg/gui/context"
 	"github.com/jesseduffield/lazygit/pkg/gui/types"
 )
@@ -11,6 +13,7 @@ type CommitMessageController struct {
 	contextsean *context.CommitMessageContext
 
 	getCommitMessage func() string
+	getCommitDescription func() string
 	setCommitMessage func(message string)
 	onCommitAttempt  func(message string)
 	onCommitSuccess  func()
@@ -21,6 +24,7 @@ var _ types.IController = &CommitMessageController{}
 func NewCommitMessageController(
 	common *controllerCommon,
 	getCommitMessage func() string,
+	getCommitDescription func() string,
 	onCommitAttempt func(message string),
 	onCommitSuccess func(),
 	setCommitMessage func(message string),
@@ -31,6 +35,7 @@ func NewCommitMessageController(
 		contextsean: &context.CommitMessageContext{},
 
 		getCommitMessage: getCommitMessage,
+		getCommitDescription: getCommitDescription,
 		onCommitAttempt:  onCommitAttempt,
 		onCommitSuccess:  onCommitSuccess,
 		setCommitMessage: setCommitMessage,
@@ -110,6 +115,8 @@ func (self *CommitMessageController) setCommitMessageAtIndex(index int) error {
 
 func (self *CommitMessageController) confirm() error {
 	message := self.getCommitMessage()
+	description := self.getCommitDescription()
+	fmt.Println(description)
 	self.onCommitAttempt(message)
 
 	if message == "" {
