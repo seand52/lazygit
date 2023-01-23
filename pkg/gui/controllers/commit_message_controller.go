@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"strings"
+
 	"github.com/jesseduffield/lazygit/pkg/gui/context"
 	"github.com/jesseduffield/lazygit/pkg/gui/types"
 )
@@ -13,6 +15,7 @@ type CommitMessageController struct {
 	getCommitMessage func() string
 	getCommitDescription func() string
 	setCommitMessage func(message string)
+	setCommitDescription func(message string)
 	onCommitAttempt  func(message string)
 	onCommitSuccess  func()
 }
@@ -26,6 +29,7 @@ func NewCommitMessageController(
 	onCommitAttempt func(message string),
 	onCommitSuccess func(),
 	setCommitMessage func(message string),
+	setCommitDescription func(message string),
 ) *CommitMessageController {
 	return &CommitMessageController{
 		baseController:   baseController{},
@@ -37,6 +41,7 @@ func NewCommitMessageController(
 		onCommitAttempt:  onCommitAttempt,
 		onCommitSuccess:  onCommitSuccess,
 		setCommitMessage: setCommitMessage,
+		setCommitDescription: setCommitDescription,
 	}
 }
 
@@ -102,12 +107,25 @@ func (self *CommitMessageController) handleCommitIndexChange(value int) error {
 	return self.setCommitMessageAtIndex(currentIndex)
 }
 
+func splitMessageAndDescription(commitMessage string) (string, string) {
+	// when saving the commit + description with the CommitCmdObj it creates two \n between the message & description
+	parts := strings.Split(commitMessage, "\n\n")
+    msg := parts[0]
+    var description string
+    if len(parts) > 1 {
+        description = parts[1]
+    }
+    return msg, description
+}
+
 func (self *CommitMessageController) setCommitMessageAtIndex(index int) error {
 	msg, err := self.git.Commit.GetMessageShawn(index)
+	commitMessage, commitDescription := splitMessageAndDescription(msg)
 	if (err != nil) {
 		return self.c.ErrorMsg(self.c.Tr.CommitWithoutMessageErr)
 	}
-	self.setCommitMessage(msg)
+	self.setCommitMessage(commitMessage)
+	self.setCommitDescription(commitDescription)
 	return nil
 }
 

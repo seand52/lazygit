@@ -26,6 +26,7 @@ func (gui *Gui) resetControllers() {
 	rebaseHelper := helpers.NewMergeAndRebaseHelper(helperCommon, gui.State.Contexts, gui.git, refsHelper)
 	suggestionsHelper := helpers.NewSuggestionsHelper(helperCommon, model, gui.refreshSuggestions)
 	setCommitMessage := gui.getSetTextareaTextFn(func() *gocui.View { return gui.Views.CommitMessage })
+	setCommitDescription := gui.getSetTextareaTextFn(func() *gocui.View { return gui.Views.CommitDescription })
 	getSavedCommitMessage := func() string {
 		return gui.State.savedCommitMessage
 	}
@@ -105,6 +106,7 @@ func (gui *Gui) resetControllers() {
 		onCommitAttempt,
 		onCommitSuccess,
 		setCommitMessage,
+		setCommitDescription,
 	)
 
 	commitDescriptionController := controllers.NewCommitDescriptionController(
