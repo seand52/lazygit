@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"fmt"
-
 	"github.com/jesseduffield/lazygit/pkg/gui/context"
 	"github.com/jesseduffield/lazygit/pkg/gui/types"
 )
@@ -113,10 +111,16 @@ func (self *CommitMessageController) setCommitMessageAtIndex(index int) error {
 	return nil
 }
 
+func buildCommitMessage(message string, description string) string {
+	if len(description) == 0 {
+		return message
+	}
+	return message + "\n" + description
+}
+
 func (self *CommitMessageController) confirm() error {
-	message := self.getCommitMessage()
-	description := self.getCommitDescription()
-	fmt.Println(description)
+	message :=  buildCommitMessage(self.getCommitMessage(), self.getCommitDescription())
+	
 	self.onCommitAttempt(message)
 
 	if message == "" {
