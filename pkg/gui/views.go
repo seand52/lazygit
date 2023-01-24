@@ -211,7 +211,7 @@ func (gui *Gui) createAllViews() error {
 	gui.Views.CommitDescription.Title = gui.c.Tr.CommitDescriptionTitle
 	gui.Views.CommitDescription.FgColor = theme.GocuiDefaultTextColor
 	gui.Views.CommitDescription.Editable = true
-	gui.Views.CommitDescription.Editor = gocui.EditorFunc(gui.simpleEditor)
+	gui.Views.CommitDescription.Editor = gocui.EditorFunc(gocui.SimpleEditor)
 
 	gui.Views.Confirmation.Visible = false
 

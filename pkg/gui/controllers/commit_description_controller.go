@@ -27,6 +27,10 @@ func (self *CommitDescriptionController) GetKeybindings(opts types.KeybindingsOp
 			Key:     opts.GetKey(opts.Config.Universal.TogglePanel),
 			Handler: self.close,
 		},
+		{
+			Key:     opts.GetKey(opts.Config.Universal.Return),
+			Handler: self.close,
+		},
 	}
 
 	return bindings

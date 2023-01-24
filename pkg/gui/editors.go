@@ -81,16 +81,6 @@ func (gui *Gui) commitMessageEditor(v *gocui.View, key gocui.Key, ch rune, mod g
 	return matched
 }
 
-func (gui *Gui) simpleEditor(v *gocui.View, key gocui.Key, ch rune, mod gocui.Modifier) bool {
-	err := gui.resizePopupPanel(v, v.TextArea.GetContent())
-	if err != nil {
-		gui.c.Log.Error(err)
-	}
-	v.RenderTextArea()
-	gui.RenderCommitLength()
-	gui.g.SetViewBeneath("commitDescription", "commitMessage", 10)
-	return gocui.SimpleEditor(v, key, ch, mod)
-}
 
 func (gui *Gui) defaultEditor(v *gocui.View, key gocui.Key, ch rune, mod gocui.Modifier) bool {
 	matched := gui.handleEditorKeypress(v.TextArea, key, ch, mod, false)
