@@ -112,6 +112,10 @@ func (self *Views) CommitMessage() *ViewDriver {
 	return self.byName("commitMessage")
 }
 
+func (self *Views) CommitDescription() *ViewDriver {
+	return self.byName("commitDescription")
+}
+
 func (self *Views) Suggestions() *ViewDriver {
 	return self.byName("suggestions")
 }

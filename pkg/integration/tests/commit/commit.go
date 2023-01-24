@@ -13,6 +13,7 @@ var Commit = NewIntegrationTest(NewIntegrationTestArgs{
 	SetupRepo: func(shell *Shell) {
 		shell.CreateFile("myfile", "myfile content")
 		shell.CreateFile("myfile2", "myfile2 content")
+		shell.CreateFile("myfile3", "myfile3 content")
 	},
 	Run: func(t *TestDriver, keys config.KeybindingConfig) {
 		t.Views().Commits().
@@ -33,5 +34,19 @@ var Commit = NewIntegrationTest(NewIntegrationTestArgs{
 			Lines(
 				Contains(commitMessage),
 			)
+		t.Views().Files().
+		IsFocused().
+		PressPrimaryAction().
+		Press(keys.Files.CommitChanges).
+		Press(keys.Universal.PrevItem)
+
+		additionalText := "number 2"
+
+		t.ExpectPopup().CommitMessagePanel().Type(additionalText).Confirm()
+		t.Views().Commits().
+			Lines(
+				Contains(commitMessage + additionalText),
+			)
+
 	},
 })

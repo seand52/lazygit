@@ -22,7 +22,16 @@ var CommitMultiline = NewIntegrationTest(NewIntegrationTestArgs{
 			PressPrimaryAction().
 			Press(keys.Files.CommitChanges)
 
-		t.ExpectPopup().CommitMessagePanel().Type("first line").AddNewline().AddNewline().Type("third line").Confirm()
+		t.ExpectPopup().CommitMessagePanel().
+		Type("first line")
+
+		t.Views().CommitMessage().Press(keys.Universal.TogglePanel)
+
+		t.ExpectPopup().CommitDescriptionPanel().AddNewline().AddNewline().Type("third line")
+
+		t.Views().CommitDescription().Press(keys.Universal.TogglePanel)
+
+		t.ExpectPopup().CommitMessagePanel().Confirm()
 
 		t.Views().Commits().
 			Lines(

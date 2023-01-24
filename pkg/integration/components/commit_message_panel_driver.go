@@ -22,7 +22,7 @@ func (self *CommitMessagePanelDriver) Type(value string) *CommitMessagePanelDriv
 }
 
 func (self *CommitMessagePanelDriver) AddNewline() *CommitMessagePanelDriver {
-	self.t.press(self.t.keys.Universal.AppendNewline)
+	self.t.press(self.t.keys.Universal.Confirm)
 
 	return self
 }
