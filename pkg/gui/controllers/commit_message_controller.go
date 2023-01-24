@@ -87,6 +87,9 @@ func (self *CommitMessageController) handlePreviousCommit() error {
 }
 
 func (self *CommitMessageController) handleNextCommit() error {
+	if (self.contextsean.GetSelectedIndex() == 0) {
+		return nil
+	}
 	return self.handleCommitIndexChange(-1)
 }
 
@@ -100,7 +103,7 @@ func (self *CommitMessageController) handleCommitDescriptionPress() error {
 func (self *CommitMessageController) handleCommitIndexChange(value int) error {
 	self.contextsean.IncrementSelectedIndexBy(value)
 	currentIndex:= self.contextsean.GetSelectedIndex()
-	if (currentIndex <= 0) {
+	if (currentIndex == 0) {
 		self.setCommitMessage("")
 		return nil
 	}
