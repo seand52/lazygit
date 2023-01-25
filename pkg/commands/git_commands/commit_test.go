@@ -267,7 +267,7 @@ Merge pull request #1750 from mark2185/fix-issue-template
 func TestGetMessageShawn(t *testing.T) {
 	type scenario struct {
 		testName       string
-		runner		   *oscommands.FakeCmdObjRunner
+		runner         *oscommands.FakeCmdObjRunner
 		expectedOutput string
 	}
 	scenarios := []scenario{

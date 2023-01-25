@@ -84,7 +84,6 @@ func (self *CommitCommands) verboseFlag() string {
 	}
 }
 
-
 func (self *CommitCommands) GetCommitMessage(commitSha string) (string, error) {
 	cmdStr := "git rev-list --format=%B --max-count=1 " + commitSha
 	messageWithHeader, err := self.cmd.New(cmdStr).DontLog().RunWithOutput()
@@ -171,6 +170,6 @@ func (self *CommitCommands) CreateFixupCommit(sha string) error {
 
 func (self *CommitCommands) GetMessageShawn(value int) (string, error) {
 	hashes, _ := self.cmd.New(fmt.Sprintf("git log -n %d --pretty=%%H", value)).DontLog().RunWithOutput()
-	hashArr:= strings.Split(strings.ReplaceAll(strings.TrimSpace(hashes), "\r\n", "\n"), "\n")
+	hashArr := strings.Split(strings.ReplaceAll(strings.TrimSpace(hashes), "\r\n", "\n"), "\n")
 	return self.GetCommitMessage(hashArr[len(hashArr)-1])
 }

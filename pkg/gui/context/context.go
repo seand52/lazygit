@@ -33,14 +33,14 @@ const (
 	INFORMATION_CONTEXT_KEY   types.ContextKey = "information"
 	LIMIT_CONTEXT_KEY         types.ContextKey = "limit"
 
-	MENU_CONTEXT_KEY           types.ContextKey = "menu"
-	CONFIRMATION_CONTEXT_KEY   types.ContextKey = "confirmation"
-	SEARCH_CONTEXT_KEY         types.ContextKey = "search"
-	COMMIT_MESSAGE_CONTEXT_KEY types.ContextKey = "commitMessage"
+	MENU_CONTEXT_KEY               types.ContextKey = "menu"
+	CONFIRMATION_CONTEXT_KEY       types.ContextKey = "confirmation"
+	SEARCH_CONTEXT_KEY             types.ContextKey = "search"
+	COMMIT_MESSAGE_CONTEXT_KEY     types.ContextKey = "commitMessage"
 	COMMIT_DESCRIPTION_CONTEXT_KEY types.ContextKey = "commitDescription"
-	SUBMODULES_CONTEXT_KEY     types.ContextKey = "submodules"
-	SUGGESTIONS_CONTEXT_KEY    types.ContextKey = "suggestions"
-	COMMAND_LOG_CONTEXT_KEY    types.ContextKey = "cmdLog"
+	SUBMODULES_CONTEXT_KEY         types.ContextKey = "submodules"
+	SUGGESTIONS_CONTEXT_KEY        types.ContextKey = "suggestions"
+	COMMAND_LOG_CONTEXT_KEY        types.ContextKey = "cmdLog"
 )
 
 var AllContextKeys = []types.ContextKey{
@@ -99,7 +99,7 @@ type ContextTree struct {
 	MergeConflicts              *MergeConflictsContext
 	Confirmation                types.Context
 	CommitMessage               types.Context
-	CommitDescription			types.Context
+	CommitDescription           types.Context
 	CommandLog                  types.Context
 
 	// display contexts

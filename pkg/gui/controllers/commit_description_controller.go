@@ -13,7 +13,6 @@ var _ types.IController = &CommitMessageController{}
 
 func NewCommitDescriptionController(
 	common *controllerCommon,
-	
 ) *CommitDescriptionController {
 	return &CommitDescriptionController{
 		baseController:   baseController{},

@@ -35,10 +35,10 @@ var Commit = NewIntegrationTest(NewIntegrationTestArgs{
 				Contains(commitMessage),
 			)
 		t.Views().Files().
-		IsFocused().
-		PressPrimaryAction().
-		Press(keys.Files.CommitChanges).
-		Press(keys.Universal.PrevItem)
+			IsFocused().
+			PressPrimaryAction().
+			Press(keys.Files.CommitChanges).
+			Press(keys.Universal.PrevItem)
 
 		additionalText := "number 2"
 
@@ -47,6 +47,5 @@ var Commit = NewIntegrationTest(NewIntegrationTestArgs{
 			Lines(
 				Contains(commitMessage + additionalText),
 			)
-
 	},
 })

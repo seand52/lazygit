@@ -195,7 +195,7 @@ type TranslationSet struct {
 	MergeOptionsTitle                   string
 	RebaseOptionsTitle                  string
 	CommitMessageTitle                  string
-	CommitDescriptionTitle				string
+	CommitDescriptionTitle              string
 	LocalBranchesTitle                  string
 	SearchTitle                         string
 	TagsTitle                           string

@@ -67,6 +67,7 @@ func (self *Popup) CommitDescriptionPanel() *CommitMessagePanelDriver {
 
 	return &CommitMessagePanelDriver{t: self.t}
 }
+
 func (self *Popup) inCommitMessagePanel() {
 	self.t.assertWithRetries(func() (bool, string) {
 		currentView := self.t.gui.CurrentContext().GetView()
