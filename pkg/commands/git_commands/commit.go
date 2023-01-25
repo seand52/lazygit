@@ -168,7 +168,7 @@ func (self *CommitCommands) CreateFixupCommit(sha string) error {
 	return self.cmd.New(fmt.Sprintf("git commit --fixup=%s", sha)).Run()
 }
 
-func (self *CommitCommands) GetMessageShawn(value int) (string, error) {
+func (self *CommitCommands) GetCommitMessageFromHistory(value int) (string, error) {
 	hashes, _ := self.cmd.New(fmt.Sprintf("git log -n %d --pretty=%%H", value)).DontLog().RunWithOutput()
 	hashArr := strings.Split(strings.ReplaceAll(strings.TrimSpace(hashes), "\r\n", "\n"), "\n")
 	return self.GetCommitMessage(hashArr[len(hashArr)-1])

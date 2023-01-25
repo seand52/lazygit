@@ -10,7 +10,7 @@ import (
 type CommitMessageController struct {
 	baseController
 	*controllerCommon
-	contextsean *context.CommitMessageContext
+	commitMessageContext *context.CommitMessageContext
 
 	getCommitMessage     func() string
 	getCommitDescription func() string
@@ -32,9 +32,9 @@ func NewCommitMessageController(
 	setCommitDescription func(message string),
 ) *CommitMessageController {
 	return &CommitMessageController{
-		baseController:   baseController{},
-		controllerCommon: common,
-		contextsean:      &context.CommitMessageContext{},
+		baseController:       baseController{},
+		controllerCommon:     common,
+		commitMessageContext: &context.CommitMessageContext{},
 
 		getCommitMessage:     getCommitMessage,
 		getCommitDescription: getCommitDescription,
@@ -87,7 +87,7 @@ func (self *CommitMessageController) handlePreviousCommit() error {
 }
 
 func (self *CommitMessageController) handleNextCommit() error {
-	if self.contextsean.GetSelectedIndex() == 0 {
+	if self.commitMessageContext.GetSelectedIndex() == 0 {
 		return nil
 	}
 	return self.handleCommitIndexChange(-1)
@@ -101,8 +101,8 @@ func (self *CommitMessageController) handleCommitDescriptionPress() error {
 }
 
 func (self *CommitMessageController) handleCommitIndexChange(value int) error {
-	self.contextsean.IncrementSelectedIndexBy(value)
-	currentIndex := self.contextsean.GetSelectedIndex()
+	self.commitMessageContext.IncrementSelectedIndexBy(value)
+	currentIndex := self.commitMessageContext.GetSelectedIndex()
 	if currentIndex == 0 {
 		self.setCommitMessage("")
 		return nil
@@ -111,7 +111,7 @@ func (self *CommitMessageController) handleCommitIndexChange(value int) error {
 }
 
 func splitMessageAndDescription(commitMessage string) (string, string) {
-	// when saving the commit + description with the CommitCmdObj it creates two \n between the message & description
+	// TODO: when saving the commit + description with the CommitCmdObj it creates two \n between the message & description
 	parts := strings.Split(commitMessage, "\n\n")
 	msg := parts[0]
 	var description string
@@ -122,7 +122,7 @@ func splitMessageAndDescription(commitMessage string) (string, string) {
 }
 
 func (self *CommitMessageController) setCommitMessageAtIndex(index int) error {
-	msg, err := self.git.Commit.GetMessageShawn(index)
+	msg, err := self.git.Commit.GetCommitMessageFromHistory(index)
 	commitMessage, commitDescription := splitMessageAndDescription(msg)
 	if err != nil {
 		return self.c.ErrorMsg(self.c.Tr.CommitWithoutMessageErr)
